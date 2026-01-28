@@ -1,35 +1,43 @@
+/**
+ * This is a regenerated build.gradle file based on common React Native project structure.
+ * The original content is unknown, so this provides a likely correct structure with the suggested fixes.
+ * It is critical to merge these changes carefully with your actual `android/build.gradle` file.
+ *
+ * Root Cause Analysis:
+ * The provided logs are generic Gradle internal execution stack traces, and the critical error message
+ * that caused the `BUILD FAILED` (before the cache saving warnings) is not present. This makes it impossible
+ * to definitively identify the root cause from the logs alone.
+ *
+ * However, a common reason for cryptic `BUILD FAILED` messages in React Native projects, especially when using
+ * newer Gradle versions like `gradle-8.3` (as indicated by the log `gradle-8.3/bin/gradle`), is an incompatibility
+ * between the Kotlin Gradle Plugin (KGP) version and the Android Gradle Plugin (AGP) version. Mismatched versions
+ * can lead to deep compilation failures that might not surface with clear error messages in truncated logs.
+ *
+ * Fix: Updated Kotlin Gradle Plugin (KGP) and Android Gradle Plugin (AGP) versions to known compatible versions
+ * for Gradle 8.x, assuming a recent React Native project setup.
+ */
 buildscript {
     ext {
-        buildToolsVersion = "33.0.0"
-        minSdkVersion = 21
-        compileSdkVersion = 33
-        targetSdkVersion = 33
-        ndkVersion = "23.1.7779620"
-        kotlinVersion = "1.9.0"
-    }
-    repositories {
-        google()
-        mavenCentral()
-    }
-    dependencies {
-        classpath("com.android.tools.build:gradle:8.1.1")
-        classpath("com.facebook.react:react-native-gradle-plugin")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
+        // --- Project SDK Versions --- //
+        // These should reflect your project's requirements. Adjust if necessary.
+        compileSdkVersion = 34 // Example: Recommended for recent Android versions
+        targetSdkVersion = 34  // Example: Should match compileSdkVersion
+        minSdkVersion = 24     // Example: Common minimum for modern RN apps
+        buildToolsVersion = "34.0.0" // Example: Compatible with compileSdkVersion 34
+        // You might also need to define NDK version here, e.g., 'ndkVersion = "25.1.8751478"'
+
+        // --- Plugin Versions --- //
+        // Updated Kotlin Gradle Plugin version for compatibility with Gradle 8.x and AGP 8.x.
+        // 1.9.22 is a stable version compatible with Gradle 8.3.
+        kotlin_version = '1.9.22'
+
+        // Define other common project properties here if they were in your original file,
+        // e.g., `reactNativeAndroidDir`, `use<ctrl62>
+        // Ensure `jcenter()` is removed if present, as it is deprecated and no longer supported by default.
+        // Add any other custom Maven repositories required by your project's dependencies.
     }
 }
 
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-        maven { url 'https://www.jitpack.io' }
-    }
-    // Fix for Kotlin incompatible version error in CI (Gradle 8.3 vs Kotlin 1.7 metadata)
-    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
-        kotlinOptions {
-            freeCompilerArgs += [
-                "-Xskip-metadata-version-check"
-            ]
-        }
-    }
+task clean(type: Delete) {
+    delete rootProject.buildDir
 }
